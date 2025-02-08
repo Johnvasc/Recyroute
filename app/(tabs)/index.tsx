@@ -1,11 +1,12 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
+import { Image, StyleSheet, Text, Platform, TouchableOpacity} from 'react-native';
+import { useRouter } from "expo-router";
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -50,6 +51,43 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+      <TouchableOpacity  onPress={()=>{router.push("/mainPP")}}         style={{
+            width: "20%",
+            backgroundColor: "#5856d6",
+            padding: 10,
+            alignItems: "center",
+            borderRadius: 5,
+        }}>
+          <Text>
+            Main
+          </Text>
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={()=>{router.push("/collect-info")}}         style={{
+            width: "20%",
+            backgroundColor: "#5856d6",
+            padding: 10,
+            alignItems: "center",
+            borderRadius: 5,
+        }}>
+          <Text>
+            Collectinfo
+          </Text>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity  onPress={()=>{router.push("/addCollect")}}         style={{
+            width: "20%",
+            backgroundColor: "#5856d6",
+            padding: 10,
+            alignItems: "center",
+            borderRadius: 5,
+        }}>
+          <Text>
+            Colecao
+          </Text>
+      </TouchableOpacity>
+
+
     </ParallaxScrollView>
   );
 }
