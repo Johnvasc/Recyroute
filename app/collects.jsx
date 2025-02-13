@@ -7,8 +7,9 @@ import { Saira_400Regular, Saira_500Medium, Saira_700Bold } from "@expo-google-f
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function Collects() {
+export default function Collects(){
     const [selectedTab, setSelectedTab] = useState("novos");
+    const [openCollects, setOpenCollects] = useState('');
 
     const screenHeight = Dimensions.get("window").height;
     const screenWidth = Dimensions.get("window").width;
@@ -53,6 +54,19 @@ export default function Collects() {
                         </Text>
                     </TouchableOpacity>
                 ))}
+            </View>
+            <View>
+                {(selectedTab=='aberto')} && <View>
+                    {openCollects.map((collect) => (
+                        <View key={collect.key} style={{height: 50, width: 360, backgroundColor: 'white'}}>
+                            <Text>
+                                {collect.title}
+                            </Text>
+                        </View>
+                    ))
+
+                    }
+                </View>
             </View>
         </View>
     );

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, Link, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
 import { Stack } from "expo-router";
 import { useState } from "react";
 import { useRouter } from "expo-router";
@@ -8,8 +8,29 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = () => {
-        // Aqui você pode adicionar lógica de autenticação
+    const handleLogin = async() => {
+        const body = (username, password)
+        try{
+            const response = await fetch("http://192.168.0.16:8080/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+            
+            const data = await response.json();
+            
+            if(response.ok){
+                Alert.alert("Cadastro bem-sucedido!", "Redirecionando para a página inicial.");
+                router.push("/login");
+            }else{
+                Alert.alert("Erro", data.message || "Falha no cadastro. Verifique suas credenciais.");
+            }
+        }catch(error){
+            Alert.alert("Erro", "Falha na conexão com o servidor.");
+            console.error(error);
+        }
         router.push("/"); // Redireciona para a página inicial após login
     };
 
@@ -26,6 +47,7 @@ export default function Login() {
                 placeholder="Username"
                 value={username}
                 onChangeText={setUsername}
+                placeholderTextColor="#BBB"
                 style={{
                     width: '80%',  
                     borderWidth: 1,
@@ -40,6 +62,7 @@ export default function Login() {
                 placeholder="Senha"
                 value={password}
                 onChangeText={setPassword}
+                placeholderTextColor="#BBB"
                 secureTextEntry
                 style={{
                     width: '80%',  
@@ -54,6 +77,15 @@ export default function Login() {
             />
 
         </View>
+        <View style={{margin: 30}}>
+                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' ,margin: 0, padding: 0}} onPress={() => router.push("/signup")}>
+                    <Text style={{color: 'white'}}>
+                        Não tem uma conta?{' '}
+                    </Text>
+                    <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>Crie uma!</Text>
+                </TouchableOpacity>
+        </View>
+
         <TouchableOpacity 
         onPress={handleLogin} 
         style={{

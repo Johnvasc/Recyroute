@@ -6,10 +6,19 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 export default function ExpandableCard({ title }) {
   const [expanded, setExpanded] = useState(false);
   const animation = useState(new Animated.Value(0))[0];
-  const [text, setText] = useState("");
-  const [selectedValue, setSelectedValue] = useState("");
+  const [weight, setWeight] = useState("");
+  const [material, setMaterial] = useState("");
   const [quantity, setQuantity] = useState("");
   const [isEditable, setIsEditable] = useState(true);
+  const [content, setContent] = useState('');
+
+  const handleContentChange = () => {
+    const content = {
+      material: material,
+      weight: weight,
+      quantity: quantity
+    }
+  };
 
   const toggleExpand = () => {
     Animated.timing(animation, {
@@ -50,22 +59,24 @@ export default function ExpandableCard({ title }) {
       <Animated.View style={{ overflow: "hidden", height: heightInterpolate, paddingVertical: 10 }}>
         <View style={{ borderWidth: 1, borderColor: "#EEE", borderRadius: 5, marginBottom: 10 }}>
           <Picker
-            selectedValue={selectedValue}
-            onValueChange={setSelectedValue}
+            material={material}
+            onValueChange={setMaterial}
             enabled={isEditable}
             style={{ height: 50 }}
           >
-            <Picker.Item label="Opção 1" value="op1" />
-            <Picker.Item label="Opção 2" value="op2" />
-            <Picker.Item label="Opção 3" value="op3" />
+            <Picker.Item label="Plástico" value="1" />
+            <Picker.Item label="Metal" value="2" />
+            <Picker.Item label="Eletrônico" value="3" />
+            <Picker.Item label="Papel" value="4" />
+            <Picker.Item label="Orgânico" value="5" />
           </Picker>
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
           <TextInput
             placeholder="Peso unitário"
-            value={text}
-            onChangeText={setText}
+            value={weight}
+            onChangeText={setWeight}
             editable={isEditable}
             style={{
               height: 40,
@@ -94,7 +105,7 @@ export default function ExpandableCard({ title }) {
 
         <View style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <TouchableOpacity onPress={handleSaveOrEdit} style={{ backgroundColor: "#679", padding: 10, borderRadius: 5, alignItems: "center", width: "40%" }}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>{isEditable ? "Salvar" : "Editar"}</Text>
+            <Text onPress={()=>{handleContentChange()}} style={{ color: "white", fontWeight: "bold" }}>{isEditable ? "Salvar" : "Editar"}</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>

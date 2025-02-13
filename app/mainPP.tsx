@@ -1,4 +1,5 @@
-import { View, Dimensions, Text, Image, StyleSheet} from "react-native";
+import { View, Dimensions, Text, StyleSheet} from "react-native";
+import { Svg, Image } from 'react-native-svg';
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
@@ -61,19 +62,26 @@ export default function main(){
                     <Text style={{fontFamily: 'Saira_Regular', fontSize: 15}}>Kg de material</Text>
 
                 </View>
-                <Image
-                    source={require("@/assets/images/undraw_clean-up_af4s.svg")} // Caminho relativo da imagem
-                    style={{ width: 108, height: 116 }} // Define o tamanho da imagem
-                    resizeMode="contain" // Ajusta a escala da imagem
-                />
+                <Svg width={108} height={116}>
+                    <Image
+                        href={require("../assets/images/undraw_clean-up_af4s.svg")}
+                        width={108}
+                        height={116}
+                    />
+                </Svg>
             </View>
 
             <View style={{display: 'flex', flexDirection: 'row', width: screenWidth, justifyContent: 'space-evenly', alignItems: 'center', margin: 30, borderColor: 'red', borderStyle: 'solid', borderWidth: 1, borderRadius: 6, marginRight: -30}}>
-                <Image
-                    source={require("@/assets/images/undraw_eco-conscious_oqny.svg")} // Caminho relativo da imagem
-                    style={{ width: 140, height: 105 }} // Define o tamanho da imagem
-                    resizeMode="contain" // Ajusta a escala da imagem
-                />
+            <Svg width={108} height={116}>
+                    <Image
+                        href={require("@/assets/images/undraw_eco-conscious_oqny.svg")} // Caminho relativo da imagem
+                        width= {140}
+                        height= {105} 
+                    />
+                </Svg>
+                
+                
+                
                 <View>
                     <Text style={{fontFamily: 'Saira_Medium', fontSize: 9}}>Top materiais reaproveitados:</Text>
                 </View>
@@ -88,10 +96,6 @@ export default function main(){
 
             <CollectCard title='Coleta Aberta'>
             </CollectCard>
-
-            <p>
-                {screenWidth}
-            </p>
         </View>
     )
 }

@@ -51,6 +51,33 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+
+      <TouchableOpacity  onPress={()=>{router.push("/signup")}}         style={{
+            width: "20%",
+            backgroundColor: "#5856d6",
+            padding: 10,
+            alignItems: "center",
+            borderRadius: 5,
+        }}>
+          <Text>
+            Criar conta
+          </Text>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity  onPress={()=>{router.push("/load")}}         style={{
+            width: "20%",
+            backgroundColor: "#5856d6",
+            padding: 10,
+            alignItems: "center",
+            borderRadius: 5,
+        }}>
+          <Text>
+            Loading
+          </Text>
+      </TouchableOpacity>
+
+
       <TouchableOpacity  onPress={()=>{router.push("/mainPP")}}         style={{
             width: "20%",
             backgroundColor: "#5856d6",
