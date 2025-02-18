@@ -117,6 +117,14 @@ export default function Signup(){
         >
             <Text style={{ color: 'white', fontWeight: "bold", fontSize: 12 }}>Cadastro</Text>
         </TouchableOpacity>
+        <View style={{margin: 10, marginBottom: 20}}>
+                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row' ,margin: 0, padding: 0}} onPress={() => router.push("/login")}>
+                    <Text style={{color: 'white'}}>
+                        Já tem uma conta?{' '}
+                    </Text>
+                    <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>Faça login!</Text>
+                </TouchableOpacity>
+        </View>
     </SafeAreaView>
   );
 }

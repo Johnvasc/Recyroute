@@ -3,7 +3,7 @@ import {ProfilePic} from './ProfilePic'
 
 export function MainHeader({username, loc, profilePic}){
     return(
-        <View style={{display: 'flex', alignItems: 'center', gap: 10, margin: '1rem'}}>
+        <View style={{display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, marginTop: 10}}>
             <ProfilePic source={{ uri: 'https://picsum.photos/80' }} ></ProfilePic>
             <Text style={{fontFamily: 'Ropa Sans', fontSize: 14, fontWeight: 'bold', color: 'black'}}>
                 {username}

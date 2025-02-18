@@ -1,19 +1,23 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
-import { View, TouchableOpacity, Text, ScrollView, SafeAreaView, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, ScrollView, SafeAreaView, StyleSheet, TextInput } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { MainHeader } from "../components/MainHeader";
-import ExpandableCard from "../components/ExpandableCard";
+import EvilIcons from '@expo/vector-icons/EvilIcons';
+import { MainHeader } from "../../components/MainHeader";
+import GreatText from "../../components/GreateText";
+import ExpandableCard from "../../components/ExpandableCard";
+import Separator from "../../components/Separator";
+import Feather from '@expo/vector-icons/Feather';
 
 export default function AddCollect(){
   const router = useRouter(); // Hook para navegação
   const [title, setTitle] = useState("")
   const [collect, setCollect] = useState("Nova Coleta");
   const [collects, setCollects] = useState([{}]);
-
+  const [localization, setLocalization] = useState(false);
   const addNewCollect = () => {
     const newId = collects.length + 1;
-    setCollects([...collects, { id: newId, title: `Coleta ${newId}` }]);
+    setCollects([...collects, { id: newId, title: `Resíduo ${newId}` }]);
   };
 
   const handleCollect = async () => {
@@ -73,13 +77,39 @@ export default function AddCollect(){
             onPress={addNewCollect}
             style={styles.addButton}
           >
+            <AntDesign name="plus" size={20} color="gray" />
             <Text style={styles.addButtonText}>
-              Adicionar Materiais
+              Adicionar Resíduo
             </Text>
           </TouchableOpacity>
 
+
+          <Separator/>
+
+          {!localization && 
+            <TouchableOpacity
+            onPress={()=>{setLocalization(true)}}
+            style={styles.addButton}
+            
+          >
+            <EvilIcons name="location" size={20} color="gray" />
+            <Text style={styles.addButtonText}>
+              Localização
+            </Text>
+          </TouchableOpacity>          
+          }
+
+          {localization &&
+            <View style={{backgroundColor: '#DDD', paddingHorizontal: 50, paddingVertical: 15, borderRadius: 6}}>
+              <Feather name="check" size={24} color="green" />
+            </View>
+          
+          }
+
+          <GreatText></GreatText>
+    
           <TouchableOpacity activeOpacity={0.7} onPress={handleCollect} style={[styles.addButton, { backgroundColor: "#679" }]}>
-            <Text style={[styles.addButtonText, { color: "white" }]}>Salvar coletas</Text>
+            <Text style={[styles.addButtonText, { color: "white" }]}>Criar coleta</Text>
           </TouchableOpacity>
 
         </View>
@@ -123,6 +153,9 @@ const styles = StyleSheet.create({
     gap: 15
   },
   addButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: "white",
     padding: 20,
     paddingLeft: 50,

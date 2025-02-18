@@ -1,16 +1,14 @@
 import { View, Platform, Button, Linking, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-export default function MapScreen() {
-    const latitude = -3.7327;
-    const longitude = -38.5270;
-
+// O componente MapScreen agora aceita a prop 'locations'
+export default function MapScreen({ locations }) {
     if (Platform.OS === "web") {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <Button
                     title="Abrir no Google Maps"
-                    onPress={() => Linking.openURL(`https://www.google.com/maps?q=${latitude},${longitude}`)}
+                    onPress={() => Linking.openURL(`https://www.google.com/maps?q=${locations[0].latitude},${locations[0].longitude}`)}
                 />
             </View>
         );
@@ -21,18 +19,25 @@ export default function MapScreen() {
             <MapView
                 style={styles.map}
                 initialRegion={{
-                    latitude,
-                    longitude,
+                    latitude: locations[0]?.latitude || 0, // Posição inicial
+                    longitude: locations[0]?.longitude || 0,
                     latitudeDelta: 0.01,
                     longitudeDelta: 0.01,
                 }}
             >
-                <Marker coordinate={{ latitude, longitude }} title="Localização" description="Você está aqui" />
+                {/* Adicionando múltiplos marcadores */}
+                {locations.map((location) => (
+                    <Marker
+                        key={location.id}
+                        coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+                        title={location.title}
+                        description={location.description}
+                    />
+                ))}
             </MapView>
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
