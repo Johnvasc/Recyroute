@@ -14,7 +14,7 @@ export default function MapScreen({ locations }) {
         );
     }
 
-    return (
+    return(
         <View style={styles.container}>
             <MapView
                 style={styles.map}

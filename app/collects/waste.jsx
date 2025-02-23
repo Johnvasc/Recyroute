@@ -3,14 +3,14 @@ import { MainHeader } from '../../components/MainHeader';
 import { useState } from "react";
 import { useFonts } from "expo-font";
 import { Saira_400Regular, Saira_500Medium, Saira_700Bold } from "@expo-google-fonts/saira";
-import { useNavigation } from "@react-navigation/native";
+import { FAB } from "react-native-paper";
+import { useRouter } from "expo-router";
 
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { router } from "expo-router";
 
 export default function Waste(){
-    const navigation = useNavigation();
+    const router = useRouter();
     const [selectedTab, setSelectedTab] = useState("novos");
     const [openCollects, setOpenCollects] = useState([
         { key: '1', title: 'Coleta 1', description: 'Descrição da coleta 1', distance: 'há 3m' },
@@ -29,7 +29,7 @@ export default function Waste(){
         Saira_Bold: Saira_700Bold,
     });
 
-    if (!fontsLoaded) {
+    if(!fontsLoaded){
         return null;
     }
 
@@ -66,7 +66,10 @@ export default function Waste(){
             {selectedTab === 'aberto' && (
                 <View>
                     {openCollects.map((collect) => (
-                        <View key={collect.key} style={{ height: 84, width: 360, backgroundColor: 'white', marginBottom: 10, padding: 15 }}>
+                        <TouchableOpacity
+                        onPress={() => router.push(`/collects/collectInfo/${collect.key}`)}
+                        key={collect.key}
+                        style={{ height: 84, width: 360, backgroundColor: 'white', marginBottom: 10, padding: 15 }}>
                             <Text style={{ fontFamily: 'Saira_Medium', fontSize: 14 }}>
                                 {collect.title}
                             </Text>
@@ -79,7 +82,7 @@ export default function Waste(){
                                 </Text>
                             </View>
 
-                        </View>
+                        </TouchableOpacity>
                     ))}
                 </View>
             )}
@@ -110,6 +113,12 @@ export default function Waste(){
                     ))}
                 </View>
             )}
+            <FAB
+            icon="plus"
+            color="white"
+            style={styles.fab}
+            onPress={() => router.push("/collects/addCollect")}
+          />
         </View>
     );
 }
@@ -129,9 +138,9 @@ const styles = StyleSheet.create({
     },
     navButton: {
         alignItems: 'center',
-        paddingVertical: 50, // Aumenta a área clicável
-        paddingHorizontal: 15, // Aumenta a área clicável
-        zIndex: 10, // Garante que o botão fique acima de outros componentes
+        paddingVertical: 50,
+        paddingHorizontal: 15,
+        zIndex: 10,
     },
     navText: {
         fontSize: 14,
@@ -140,5 +149,12 @@ const styles = StyleSheet.create({
     },
     navTextActive: {
         color: "#667799",
-    }
+    },
+    fab: {
+        position: "absolute",
+        right: 20,
+        bottom: 100,
+        backgroundColor: "#667799",
+        color: 'white'
+    },
 });

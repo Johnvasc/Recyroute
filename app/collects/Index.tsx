@@ -54,7 +54,7 @@ export default function main(){
             width: '100%',
         },
         scrollViewContent: {
-            paddingBottom: 30, // Adicionando padding extra no final para garantir que não fique cortado
+            paddingBottom: 30,
         },
         });
 

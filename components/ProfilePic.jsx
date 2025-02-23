@@ -6,7 +6,7 @@ export function ProfilePic({source}){
     const router = useRouter();
 
     return(
-      <TouchableOpacity onPress={() => router.push("/")}>
+      <TouchableOpacity onPress={() => router.push("/collects/Index")}>
         <Image
           source={source}
           style={{borderRadius: 100, width: 80, height: 80 }}

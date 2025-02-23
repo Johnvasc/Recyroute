@@ -1,9 +1,9 @@
-import { View, Link, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
+import { View, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, Image, Alert, Platform } from "react-native";
 import { Stack } from "expo-router";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 
-export default function Login() {
+export default function Login(){
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -19,11 +19,11 @@ export default function Login() {
     };
 
     return(
-    <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", padding: 20, backgroundColor: '#667799'}}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", padding: 20, backgroundColor: '#667799'}}>
         <Image
-            source={require("../assets/images/cartLogo.png")} // Caminho relativo da imagem
-            style={{ marginTop: 120, marginBottom: 40, width: 200, height: 200 }} // Define o tamanho da imagem
-            resizeMode="contain" // Ajusta a escala da imagem
+            source={require("../assets/images/cartLogo.png")}
+            style={{ marginTop: 120, marginBottom: 40, width: 200, height: 200 }}
+            resizeMode="contain"
         />
         <View style={{ width: '100%', gap: 20 , justifyContent: "center", alignItems: "center"}}>
             <Stack.Screen options={{ headerShown: false }} />
@@ -82,6 +82,6 @@ export default function Login() {
         >
         <Text style={{ color: "white", fontWeight: "bold", fontSize: 12 }}>Login</Text>
         </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

@@ -28,7 +28,7 @@ export function MainNav(){
             </View>
 
             <View>
-                <TouchableOpacity style={styles.nabB}>
+                <TouchableOpacity style={styles.nabB} onPress={()=>{router.push("/collects/edit");}}>
                     <AntDesign name="edit" size={24} color="#999" />
                 </TouchableOpacity>
                 <Text style={{fontFamily: 'Ropa Sans', fontSize: 9, color: '#999'}}>Editar perfil</Text>          
