@@ -1,25 +1,21 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import MapScreen from "../../../components/MapScreen";
 import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import ProgressBBar from "../../../components/progressBar";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { GlobalContext } from '../../../contexts/GlobalContext';
 
 export default function CollectInfo(){
-    const [disabled, setDisabled] = useState(false)
+    const { globalData, atualizarItem } = useContext(GlobalContext);
+    const [disabled, setDisabled] = useState(false);
     const { id , type } = useLocalSearchParams();
-    const [progressBar, setProgress] = useState(false)
-    const [newCollects, setNewCollects] = useState([
-        { id: '1', title: 'Plástico em Pici', description: 'Descrição da coleta 1', distance: '1.5 Km', locations: [{ id: 1, latitude: -3.7327, longitude: -38.5270, title: "Local 1", description: "Primeira localização" }], collects: { "Plástico": "2kg" },favorite: false },
-        { id: '2', title: 'Metal em Parquelândia', description: 'Descrição da coleta 2', distance: '1.3 Km', locations: [{ id: 1, latitude: -3.7327, longitude: -38.5270, title: "Local 1", description: "Primeira localização" }], collects: { "Metal": "2kg" }, favorite: false },
-        { id: '4', title: 'Coleta favoritada', description: 'Uma coleta que recebeu status de favorita por algum motivo', distance: '1.4 Km', locations: [{ id: 1, latitude: -3.7327, longitude: -38.5270, title: "Local 1", description: "Primeira localização" }], collects: { "Plástico": "2kg" }, favorite: true },
-        { id: '3', title: 'Diversos em Castelão', description: 'Descrição da coleta 3', distance: '1.8 Km', locations: [{ id: 1, latitude: -3.7327, longitude: -38.5270, title: "Local 1", description: "Primeira localização" }], collects: { "Plástico": "2kg", "Metal": "12Kg"}, favorite: false }
-    ]);
+    const [progressBar, setProgress] = useState(false);
     
-    const selectedCollect = newCollects.find(collect => collect.id === id);
+    const selectedCollect = globalData.find(collect => collect.key === id);
     
-    if (!selectedCollect) {
+    if(!selectedCollect) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#EEE" }}>
                 <Text style={{ fontSize: 18, color: "#667799" }}>Coleta não encontrada</Text>
@@ -27,18 +23,34 @@ export default function CollectInfo(){
         );
     }
     
-    const [favorite, setFavorite] = useState(selectedCollect.favorite)
+    const handleFavorite = (itemKey, newFavorite) => {
+        const itemOriginal = globalData.find((item) => item.key === itemKey);
+        const itemModificado = {
+          ...itemOriginal,
+          favorite: newFavorite,
+        };
+        console.log(globalData)
+        atualizarItem(itemModificado); // Chama a função do contexto
+    };
+    const handleStatus = (itemKey, status) => {
+        const itemOriginal = globalData.find((item) => item.key === itemKey);
+        const itemModificado = {
+          ...itemOriginal,
+          status: status,
+        };
+        atualizarItem(itemModificado); // Chama a função do contexto
+    };
 
     return(
-        <ScrollView style={{ flex: 1, backgroundColor: "#EEE" }}>
+        <ScrollView style={{backgroundColor: "#EEE", paddingBottom: 40}}>
             {progressBar && <ProgressBBar route={"/collects/collects"}/>
             }
             <View style={{ display: 'flex', alignItems: "center", padding: 20 }}>
                 
                 <View style={{display: 'flex', flexDirection: "row", alignItems: 'center', justifyContent: 'center', gap: 5}}>
-                    <TouchableOpacity onPress={()=>{setFavorite(!favorite)}}>
-                        {!favorite && <FontAwesome name="star-o" size={24} color="#667799" />}
-                        {favorite && <FontAwesome name="star" size={24} color="#eedd00" />}
+                    <TouchableOpacity onPress={()=>{handleFavorite(selectedCollect.key, !selectedCollect.favorite)}}>
+                        {!selectedCollect.favorite && (selectedCollect.status=='1' || selectedCollect.status=='3') && <FontAwesome name="star-o" size={24} color="#667799" />}
+                        {selectedCollect.favorite && (selectedCollect.status=='1' || selectedCollect.status=='3') && <FontAwesome name="star" size={24} color="#eedd00" />}
                     </TouchableOpacity>
                     <Text style={{ color: "#667799", fontSize: 20, fontWeight: "bold", marginVertical: 10 }}>
                         {selectedCollect.title}
@@ -58,23 +70,23 @@ export default function CollectInfo(){
                 </View>
                 
                 <MapScreen locations={selectedCollect.locations} />
-                {type=='add' &&
-                    <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true)}} style={{backgroundColor: '#667799', padding: 20, borderRadius: 6, margin: 40}}>
+                {selectedCollect.status=='2' &&
+                    <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true); handleStatus(selectedCollect.key, '1')}} style={{backgroundColor: '#667799', padding: 20, borderRadius: 6, margin: 40}}>
                         <Text style={{color: 'white'}}>
                             <AntDesign name="plus" size={14} color="white" />
                             Adicionar coleta
                         </Text>                    
                     </TouchableOpacity>
                 }
-                {type=='open' &&
+                {(selectedCollect.status=='1' || selectedCollect.status=='3') &&
                     <View>
-                        <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true)}} style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, backgroundColor: '#667799', padding: 20, borderRadius: 6, margin: 10}}>
+                        <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true); handleStatus(selectedCollect.key, '4')}} style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, backgroundColor: '#667799', padding: 20, borderRadius: 6, margin: 10}}>
                             <AntDesign name="check" size={14} color="white" />
                             <Text style={{color: 'white'}}>
                                 Coleta finalizada
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true)}} style={{backgroundColor: '#995544', padding: 20, borderRadius: 6, margin: 10}}>
+                        <TouchableOpacity disabled={disabled} onPress={()=>{setProgress(true); setDisabled(true); handleStatus(selectedCollect.key, '2')}} style={{backgroundColor: '#995544', padding: 20, borderRadius: 6, margin: 10}}>
                             <Text style={{color: 'white'}}>
                                 <AntDesign name="minus" size={14} color="white" />
                                 Cancelar coleta

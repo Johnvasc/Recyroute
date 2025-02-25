@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
 import { defaultFeatureFlags } from 'react-native-css-interop/dist/css-to-rn/feature-flags';
 
-export default function GreatText(){
+export default function GreatText({ value, onChangeText }){
   const [text, setText] = useState('');
-
   return (
     <View style={styles.container}>
       <TextInput
@@ -12,8 +11,8 @@ export default function GreatText(){
         placeholder="comentários..."
         multiline={true}
         numberOfLines={4} // Número mínimo de linhas visíveis
-        value={text}
-        onChangeText={setText}
+        value={value}
+        onChangeText={onChangeText}
       />
     </View>
   );
